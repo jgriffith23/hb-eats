@@ -23,16 +23,17 @@ def get_restaurants(lat="37.788744", lon="-122.411587", radius="485"):
 
     access_token = get_access_token()
 
+    # Strings for businesses/search endpoint. We'll fill in terms w/
+    # passed arguments except categories, which should always be food.
     base_url = "https://api.yelp.com/v3/businesses/search?"
     search_terms = "latitude=%s&longitude=%s&radius=%s&categories=food"
 
-    # Fetch all restaurant info 
+    # Fetch all search result information.
     response = requests.get(base_url + search_terms % (lat, lon, radius),
                             headers={'Authorization': 'Bearer %s' % access_token})
 
-    # Extract just the restaurant names/ids
+    # Extract just the restaurant info dictionaries; don't care about total yet. 
     restaurants = response.json()['businesses']
-    print restaurants
     return restaurants
 
 for restaurant in get_restaurants():
