@@ -4,23 +4,25 @@
 
 {% block content %}
 
-<ul>
+<div class="container-fluid col-xs-offset-1 col-md-offset-1 col-md-10">
+    <h1>Tasty Eatz Near Hackbright</h1>
+    <div class="row">
     {% for restaurant in restaurants %}
-        <h3> {{ restaurant['name'] }} </h3> 
-        Price: {{ restaurant['price'] }}<br>
-        Categories: 
-        {% for category in restaurant['categories'] %} 
-            {{ category['title'] }} | 
-        {% endfor %} <br>
-        Rating: {{ restaurant['rating'] }}<br>
-        Address: {{ restaurant['location']['address1'] }}<br>
-        Distance from Hackbright: {{ restaurant_travel_details[restaurant['name']]['distance'] }} <br>
-        Time to walk from Hackbright: {{ restaurant_travel_details[restaurant['name']]['duration'] }}<br>
-        <img src="{{ restaurant['image_url'] }}" width="300px">
-
-    <hr>
-    <br>
+        <div class="col-xs-6 col-xs-offset-1 col-md-4">
+            <h3> {{ restaurant['name'] }}  <a href="{{ restaurant['url'] }}"> <img src="/static/assets/yelp-2C.png" width="50px"></a> </h3> 
+            Price: {{ restaurant['price'] }}<br>
+            Categories: 
+            {% for category in restaurant['categories'] %} 
+                {{ category['title'] }} | 
+            {% endfor %} <br>
+            Rating: {{ restaurant['rating'] }}<br>
+            Address: {{ restaurant['location']['address1'] }}<br>
+            Distance from Hackbright: {{ restaurant_travel_details[restaurant['name']]['distance'] }} <br>
+            Time to walk from Hackbright: {{ restaurant_travel_details[restaurant['name']]['duration'] }}<br>
+            <img class="img-responsive img-rounded" src="{{ restaurant['image_url'] }}">
+        </div>
     {% endfor %}
-</ul>
+    </div>
+</div>
 
 {% endblock %}

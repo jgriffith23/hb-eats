@@ -19,15 +19,16 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Render the homepage."""
 
+    # Fetch a list of restaurants near HB
     restaurants = yelp.get_restaurants()
     restaurant_travel_details = {}
-    print "\n*********************************************************"
+
+    # Use gmaps distance matrix API to get the time/distance from HB
+    # on foot for each restaurant.
     for restaurant in restaurants:
-        print "Getting travel info for %s..." % restaurant['name']
         coords = restaurant['coordinates']
         travel_details = gmaps.get_travel_details(coords)
         restaurant_travel_details[restaurant['name']] = travel_details
-    print "*********************************************************\n"
 
     return render_template("index.html",
                            restaurants=restaurants,

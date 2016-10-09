@@ -1,8 +1,8 @@
-import googlemaps
 import os
 import requests
 
-def get_travel_details(end, start=("37.788744","-122.411587")):
+
+def get_travel_details(end, start="683+Sutter+St+San+Francisco+CA"):
     """Given a start/end latitudes and logitudes, returns the distance and
     travel time between them.
 
@@ -13,8 +13,8 @@ def get_travel_details(end, start=("37.788744","-122.411587")):
 
     # Create strings for URL to access API endpoint
     endpoint = "https://maps.googleapis.com/maps/api/distancematrix/json"
-    params = "?units=imperial&origins=%s,%s&destinations=%s,%s&mode=walking&key=%s" % \
-             (start[0], start[1], end['latitude'], end['longitude'], dm_api_key)
+    params = "?units=imperial&origins=%s&destinations=%s,%s&mode=walking&key=%s" % \
+             (start, end['latitude'], end['longitude'], dm_api_key)
 
     full_response = requests.get(endpoint + params).json()
 

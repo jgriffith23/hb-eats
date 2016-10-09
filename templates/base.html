@@ -3,11 +3,13 @@
 <html>
     <head>
         <title>HB Eatz {% block title %} TITLE GOES HERE {% endblock %}</title>
-        <!-- <link rel="stylesheet" href="/static/css/styles.css"> -->
-        <script src="http://code.jquery.com/jquery.js"></script>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
     </head>
     <body>
-        <h1>Hot Eatz Near Hackbright</h1>
-        {% block content %} BODY CONTENT GOES HERE {% endblock %}
+        <div class="container-fluid" id="body-div">
+            {% block content %} CONTENT GOES HERE {% endblock %}
+        </div>
     </body>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/jquery.js"></script>
 </html>
