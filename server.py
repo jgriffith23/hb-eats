@@ -20,19 +20,23 @@ def index():
     """Render the homepage."""
 
     # Fetch a list of restaurants near HB
-    restaurants = yelp_api.get_restaurants()
-    travel_details = {}
+    restaurants = yelp_api.get_restaurants(term="lunch")
 
-    # Use gmaps distance matrix API to get the time/distance from HB
-    # on foot for each restaurant.
-    for restaurant in restaurants:
+    # To avoid maxing out gmaps API calls, store travel details in the
+    # user's session.
+    if "travel_details" not in session:
+        travel_details = {}
 
-        coords = restaurant['coordinates']
+        # Use gmaps distance matrix API to get the time/distance from HB
+        # on foot for each restaurant.
+        for restaurant in restaurants:
 
-        time_and_distance = gmaps.get_travel_details(end=coords)
-        travel_details[restaurant['name']] = time_and_distance
+            coords = restaurant['coordinates']
+            time_and_distance = gmaps.get_travel_details(end=coords)
+            travel_details[restaurant['name']] = time_and_distance
+        session["travel_details"] = travel_details
 
-    return render_template("index.html", restaurants=restaurants, travel_details=travel_details)
+    return render_template("index.html", restaurants=restaurants, travel_details=session["travel_details"])
 
 
 #####################################################

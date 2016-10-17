@@ -4,12 +4,13 @@
     <head>
         <title>HB Eatz {% block title %} TITLE GOES HERE {% endblock %}</title>
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/styles.css"
     </head>
     <body>
-        <div class="container-fluid" id="body-div">
+        <div class="container" id="body-div">
             {% block content %} CONTENT GOES HERE {% endblock %}
         </div>
     </body>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 </html>

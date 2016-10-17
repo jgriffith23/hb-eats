@@ -18,7 +18,7 @@ def get_access_token():
     return response.json()['access_token']
 
 
-def get_restaurants(lat="37.788744", lon="-122.411587", radius="805", term="lunch"):
+def get_restaurants(term, lat="37.788744", lon="-122.411587", radius="805"):
     """Finds restaurants near given lat/lon.
 
     Radius in meters. Default radius is ~15 min away from default lat/lon.
@@ -26,41 +26,30 @@ def get_restaurants(lat="37.788744", lon="-122.411587", radius="805", term="lunc
     Note: Using lat/lon because radius doesn't work properly with an address.
     """
 
-    # Create OAuth2 token, set URL for business search API endpoint,
-    # and prepare the search parameters
+    # Create OAuth2 token and store in session (we don't need to get a new one
+    # for every API request)
     if "access_token" not in session:
         session["access_token"] = get_access_token()
-        print session
 
     base_url = "https://api.yelp.com/v3/businesses/search"
 
-    restaurants = []
-    times_queried = 0
+    # Set parameters for our request to the business search API.
+    parameters = {
+        "latitude": lat,
+        "longitude": lon,
+        "radius": radius,
+        "term": term,
+        "categories": "restaurants",
+        "price": "1,2,3",
+        "sort_by": "distance",
+        # "open_at": "1476475221"
+        "open_now": "true"
+    }
 
-    # Make two queries to the business search API, and put the results in a
-    # a list. This should give us 100 locations.
-    while times_queried != 2:
+    # Fetch all restaurants that fit these parameters and capture the response.
+    response = requests.get(url=base_url,
+                            params=parameters,
+                            headers={'Authorization': 'Bearer %s' % session["access_token"]})
 
-        parameters = {
-            "latitude": lat,
-            "longitude": lon,
-            "radius": radius,
-            "term": term,
-            "categories": "restaurants",
-            "price": "1,2,3",
-            "sort_by": "distance",
-            "open_at": "1476475221"
-        }
-
-        # Fetch all restaurants that fit these parameters and capture the response.
-        response = requests.get(url=base_url,
-                                params=parameters,
-                                headers={'Authorization': 'Bearer %s' % session["access_token"]})
-
-        # Extract just the restaurant info dictionaries; don't care about total yet.
-        restaurants.extend(response.json()['businesses'])
-
-        times_queried += 1
-
-
-    return restaurants
+    # Extract just the business info.
+    return response.json()['businesses']
