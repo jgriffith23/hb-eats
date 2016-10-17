@@ -1,0 +1,66 @@
+import requests
+import os
+from flask import session
+
+# Special thanks to aninahpets and her amazing project Fuder, which I looked
+# to for code examples. https://github.com/aninahpets/Fuder
+
+
+def get_access_token():
+    """Fetches the OAuth2 access token from Yelp."""
+
+    # Request the access token using app's id and secret
+    response = requests.post('https://api.yelp.com/oauth2/token',
+                             data={'grand_type': 'client_credentials',
+                                   'client_id': os.environ['YELP_APP_ID'],
+                                   'client_secret': os.environ['YELP_APP_SECRET']})
+
+    return response.json()['access_token']
+
+
+def get_restaurants(lat="37.788744", lon="-122.411587", radius="805", term="lunch"):
+    """Finds restaurants near given lat/lon.
+
+    Radius in meters. Default radius is ~15 min away from default lat/lon.
+
+    Note: Using lat/lon because radius doesn't work properly with an address.
+    """
+
+    # Create OAuth2 token, set URL for business search API endpoint,
+    # and prepare the search parameters
+    if "access_token" not in session:
+        session["access_token"] = get_access_token()
+        print session
+
+    base_url = "https://api.yelp.com/v3/businesses/search"
+
+    restaurants = []
+    times_queried = 0
+
+    # Make two queries to the business search API, and put the results in a
+    # a list. This should give us 100 locations.
+    while times_queried != 2:
+
+        parameters = {
+            "latitude": lat,
+            "longitude": lon,
+            "radius": radius,
+            "term": term,
+            "categories": "restaurants",
+            "price": "1,2,3",
+            "sort_by": "distance",
+            "open_at": "1476475221"
+        }
+
+        # Fetch all restaurants that fit these parameters and capture the response.
+        response = requests.get(url=base_url,
+                                params=parameters,
+                                headers={'Authorization': 'Bearer %s' % session["access_token"]})
+
+        # Extract just the restaurant info dictionaries; don't care about total yet.
+        restaurants.extend(response.json()['businesses'])
+
+        times_queried += 1
+
+
+    return restaurants

@@ -1,7 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
-import yelp
+import yelp_api
 import gmaps
 
 
@@ -20,19 +20,20 @@ def index():
     """Render the homepage."""
 
     # Fetch a list of restaurants near HB
-    restaurants = yelp.get_restaurants()
-    restaurant_travel_details = {}
+    restaurants = yelp_api.get_restaurants()
+    travel_details = {}
 
     # Use gmaps distance matrix API to get the time/distance from HB
     # on foot for each restaurant.
     for restaurant in restaurants:
-        coords = restaurant['coordinates']
-        travel_details = gmaps.get_travel_details(coords)
-        restaurant_travel_details[restaurant['name']] = travel_details
 
-    return render_template("index.html",
-                           restaurants=restaurants,
-                           restaurant_travel_details=restaurant_travel_details)
+        coords = restaurant['coordinates']
+
+        time_and_distance = gmaps.get_travel_details(end=coords)
+        travel_details[restaurant['name']] = time_and_distance
+
+    return render_template("index.html", restaurants=restaurants, travel_details=travel_details)
+
 
 #####################################################
 # Code that only runs if file is explicitly run
