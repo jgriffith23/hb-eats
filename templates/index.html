@@ -16,27 +16,31 @@
 
 <div class="row">
 {% for restaurant in restaurants %}
+    {% if travel_details.get(restaurant.get('name')) %}
     <div class="col-xs-6 col-xs-offset-1 col-md-4">
         <div class="container well well-lg">
-            <h3> <a href="{{ restaurant['url'] }}"> {{ restaurant['name'] }} </a> </h3>
+            <h4 class="rest-name"> 
+                <a href="{{ restaurant['url'] }}"> {{ restaurant['name'] }} </a> 
+            </h4>
 
-            Price: {{ restaurant['price'] }}<br> 
-            <p class="category-list">
+            <div class="category-list">
                 | {% for category in restaurant['categories'] %} 
-                {{ category['title'] }} |
-            {% endfor %} </p>
+                      {{ category['title'] }} |
+                  {% endfor %} 
+            </div>
 
-            Rating: {{ restaurant['rating'] }}<br>
+            <div class="other-info">
+                Price: {{ restaurant['price'] }}<br> 
+                Rating: {{ restaurant['rating'] }}<br>
+                Address: {{ restaurant['location']['address1'] }}<br>
+                Distance from Hackbright: {{ travel_details[restaurant['name']]['distance']['text'] }} <br>
+                Time to walk from Hackbright: {{ travel_details[restaurant['name']]['duration']['text'] }}<br>
 
-            Address: {{ restaurant['location']['address1'] }}<br>
-
-           Distance from Hackbright: {{ travel_details[restaurant['name']]['distance']['text'] }} <br>
-
-            Time to walk from Hackbright: {{ travel_details[restaurant['name']]['duration']['text'] }}<br>
-
-            <img class="img-responsive img-rounded thumbnail restaurant-img" src="{{ restaurant['image_url'] }}">
+                <img class="img-responsive img-rounded thumbnail restaurant-img" src="{{ restaurant['image_url'] }}">
+            </div>
         </div>
     </div>
+    {% endif %}
 {% endfor %}
 </div>
 

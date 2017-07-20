@@ -2,6 +2,8 @@ import requests
 import os
 from flask import session
 
+SEEDING = False
+
 # Special thanks to aninahpets and her amazing project Fuder, which I looked
 # to for code examples. https://github.com/aninahpets/Fuder
 
@@ -28,8 +30,12 @@ def get_restaurants(term, lat="37.788744", lon="-122.411587", radius="805"):
 
     # Create OAuth2 token and store in session (we don't need to get a new one
     # for every API request)
-    if "access_token" not in session:
-        session["access_token"] = get_access_token()
+
+    access_token = get_access_token()
+    
+    if not SEEDING:
+        if "access_token" not in session:
+            session["access_token"] = get_access_token()
 
     base_url = "https://api.yelp.com/v3/businesses/search"
 
@@ -40,16 +46,22 @@ def get_restaurants(term, lat="37.788744", lon="-122.411587", radius="805"):
         "radius": radius,
         "term": term,
         "categories": "restaurants",
+        "limit": 20,
         "price": "1,2,3",
         "sort_by": "distance",
-        # "open_at": "1476475221"
-        "open_now": "true"
+        # "open_now": "true",
+        "open_at": 1500494400,  # 1:30 PM on 7/14/2017, no timezone
     }
+
+    # FIXME: Store resulting JSON data in database...
 
     # Fetch all restaurants that fit these parameters and capture the response.
     response = requests.get(url=base_url,
                             params=parameters,
-                            headers={'Authorization': 'Bearer %s' % session["access_token"]})
+                            headers={'Authorization': 'Bearer %s' % access_token})
+    print "\n\n\nTHE STUFF\n"
+    print response.json()
+    print "\n\n\n\n"
 
     # Extract just the business info.
     return response.json()['businesses']

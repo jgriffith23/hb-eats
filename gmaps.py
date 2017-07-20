@@ -37,5 +37,7 @@ def get_travel_details(end="611+Post+St+San+Francisco+CA",
                 u'destination_addresses': [u'611 Post St, San Francisco, CA 94109, USA']}
     """
 
+    #FIXME: Store returned data as JSON file? Or just ask Henry about math???
+
     # We only want the duration and distance info, so only return those.
     return matrix['rows'][0]['elements'][0]

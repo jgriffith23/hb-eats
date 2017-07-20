@@ -9,15 +9,14 @@ app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
-
-# Normally, if you use an undefined variable in Jinja2, it fails
-# silently. This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
 
 
 @app.route("/")
 def index():
     """Render the homepage."""
+
+    print "\n\n", session, "\n <3 from index\n\n"
 
     # Fetch a list of restaurants near HB
     restaurants = yelp_api.get_restaurants(term="lunch")
@@ -32,8 +31,9 @@ def index():
         for restaurant in restaurants:
 
             coords = restaurant['coordinates']
-            time_and_distance = gmaps.get_travel_details(end=coords)
-            travel_details[restaurant['name']] = time_and_distance
+            if coords.get('latitude') is not None:
+                time_and_distance = gmaps.get_travel_details(end=coords)
+                travel_details[restaurant['name']] = time_and_distance
         session["travel_details"] = travel_details
 
     return render_template("index.html", restaurants=restaurants, travel_details=session["travel_details"])
