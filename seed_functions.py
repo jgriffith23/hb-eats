@@ -52,52 +52,57 @@ def load_restaurant_distances():
         street = "+".join(campus.street.split(" "))
         city = "+".join(campus.city.split(" "))
 
-        addr_for_search = "+".join([
+        search_addr = "+".join([
             str(campus.building),
             street,
             city,
             campus.state,
         ])
 
-        print addr_for_search
+        restaurants = yelp_api.get_restaurants(term="lunch", lat=lat, lon=lon)
 
-        restaurants = yelp_api.get_restaurants(term="lunch")
+        for restaurant in restaurants:
+            coords = restaurant['coordinates']
+            if coords.get('latitude') is None:
+                continue
 
+            dist_info = gmaps.get_travel_details(start=search_addr, end=coords)
 
-        # {
-        #     u'duration': 
-        #     {
-        #         u'text': u'2 mins', 
-        #         u'value': 128
-        #     },
-            
-        #     u'distance': 
-        #     {
-        #         u'text': u'0.1 mi', 
-        #         u'value': 166
-        #     },
+            name = restaurant['name']
+            yelp_id = restaurant['id']
 
-        #     u'status': u'OK'
-        # }
+            units_away, units = dist_info['distance']['text'].split(' ')
 
-        # for restaurant in restaurants:
-        #     coords = restaurant['coordinates']
-        #     if coords.get('latitude') is None:
-        #         continue
+            if units[-1] == 's':
+                units = units[:-1]
 
-        #     time_and_distance = gmaps.get_travel_details(end=coords)
+            minutes = dist_info['duration']['text'].split(' ')[0]
 
-        #     name = restaurant['name']
-        #     yelp_id = restaurant['id']
-        #     miles_away_683 = float(time_and_distance['distance']['text'][:-3])
-        #     minutes_away_683 = int(time_and_distance['duration']['text'][:-5])
+            rest_record = Restaurant.query.filter_by(name=name).first()
+            if not rest_record:
+                rest_record = Restaurant(name=name, yelp_id=yelp_id)
 
-        # FIXME: Make model for HB campus and model for location_info
+            dist_record = Distance(restaurant=rest_record,
+                                   campus=campus,
+                                   units_away=units_away,
+                                   minutes=minutes,
+                                   units=units)
+
+            db.session.add_all([rest_record, dist_record])
+
+        db.session.commit()
 
 
-if __name__ == "__main__":
+def reseed_all():
+    """Refresh the entire database with accurate data."""
+
     connect_to_db(app)
+    db.drop_all()
     db.create_all()
 
     load_campuses("seed_data/addresses.csv")
     load_restaurant_distances()
+
+
+if __name__ == "__main__":
+    reseed_all()

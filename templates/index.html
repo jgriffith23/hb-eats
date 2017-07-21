@@ -16,31 +16,31 @@
 
 <div class="row">
 {% for restaurant in restaurants %}
-    {% if travel_details.get(restaurant.get('name')) %}
     <div class="col-xs-6 col-xs-offset-1 col-md-4">
         <div class="container well well-lg">
             <h4 class="rest-name"> 
-                <a href="{{ restaurant['url'] }}"> {{ restaurant['name'] }} </a> 
+                <a href="{{ restaurants[restaurant]['details']['url'] }}"> 
+                    {{ restaurant }} 
+                </a> 
             </h4>
 
             <div class="category-list">
-                | {% for category in restaurant['categories'] %} 
+                | {% for category in restaurants[restaurant]['details']['categories'] %} 
                       {{ category['title'] }} |
                   {% endfor %} 
             </div>
 
             <div class="other-info">
-                Price: {{ restaurant['price'] }}<br> 
-                Rating: {{ restaurant['rating'] }}<br>
-                Address: {{ restaurant['location']['address1'] }}<br>
-                Distance from Hackbright: {{ travel_details[restaurant['name']]['distance']['text'] }} <br>
-                Time to walk from Hackbright: {{ travel_details[restaurant['name']]['duration']['text'] }}<br>
+                Price: {{ restaurants[restaurant]['details']['price'] }}<br> 
+                Rating: {{ restaurants[restaurant]['details']['rating'] }}<br>
+                Address: {{ restaurants[restaurant]['details']['location']['address1'] }}<br>
+                Distance from Hackbright: {{ restaurants[restaurant]['distance'].units_away }} {{ restaurants[restaurant]['distance'].units }}<br>
+                Time to walk from Hackbright: {{ restaurants[restaurant]['distance'].minutes }} min<br>
 
-                <img class="img-responsive img-rounded thumbnail restaurant-img" src="{{ restaurant['image_url'] }}">
+                <img class="img-responsive img-rounded thumbnail restaurant-img" src="{{ restaurants[restaurant]['details']['image_url'] }}">
             </div>
         </div>
     </div>
-    {% endif %}
 {% endfor %}
 </div>
 

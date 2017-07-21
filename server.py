@@ -1,8 +1,8 @@
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
+from model import Campus, connect_to_db
 import yelp_api
-import gmaps
 
 
 app = Flask(__name__)
@@ -18,26 +18,25 @@ def index():
 
     print "\n\n", session, "\n <3 from index\n\n"
 
-    # Fetch a list of restaurants near HB
-    restaurants = yelp_api.get_restaurants(term="lunch")
+    campuses = Campus.query.all()
 
-    # To avoid maxing out gmaps API calls, store travel details in the
-    # user's session.
-    if "travel_details" not in session:
-        travel_details = {}
+    hb_683 = campuses[0]
 
-        # Use gmaps distance matrix API to get the time/distance from HB
-        # on foot for each restaurant.
-        for restaurant in restaurants:
+    distances = hb_683.distances
 
-            coords = restaurant['coordinates']
-            if coords.get('latitude') is not None:
-                time_and_distance = gmaps.get_travel_details(end=coords)
-                travel_details[restaurant['name']] = time_and_distance
-        session["travel_details"] = travel_details
+    restaurants = {}
 
-    return render_template("index.html", restaurants=restaurants, travel_details=session["travel_details"])
+    for distance in distances:
+        restaurant = distance.restaurant
+        print restaurant.name
+        details = yelp_api.get_restaurant(restaurant.yelp_id)
+        restaurants[restaurant.name] = {'distance': distance,
+                                        'details': details,
+                                        'name': restaurant.name}
 
+    return render_template("index.html", restaurants=restaurants)
+
+    # return jsonify(restaurants['Matador']['details'])
 
 #####################################################
 # Code that only runs if file is explicitly run
@@ -47,9 +46,13 @@ if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
     app.debug = True
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     TEMPLATES_AUTO_RELOAD = True
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
+
+    connect_to_db(app)
 
     app.run()

@@ -14,6 +14,11 @@ class Restaurant(db.Model):
     name = db.Column(db.String(64))
     yelp_id = db.Column(db.String(64))
 
+    def __repr__(self):
+        """A sane representation of a restaurant object."""
+
+        return "<Restaurant {name}>".format(name=self.name)
+
 
 class Campus(db.Model):
     """A Hackbright campus location."""
@@ -46,15 +51,27 @@ class Distance(db.Model):
     __tablename__ = "distances"
 
     dist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    campus_id = db.Column(db.Integer, 
+    campus_id = db.Column(db.Integer,
                           db.ForeignKey("campuses.campus_id"))
-    restaurant_id = db.Column(db.Integer, 
+    restaurant_id = db.Column(db.Integer,
                               db.ForeignKey("restaurants.restaurant_id"))
-    miles = db.Column(db.Float)
+    units_away = db.Column(db.Float)
+    units = db.Column(db.String(5))
     minutes = db.Column(db.Float)
 
     restaurant = db.relationship('Restaurant', backref='distances')
-    campus = db.relationship('Campus', backref='campuses')
+    campus = db.relationship('Campus', backref='distances')
+
+    def __repr__(self):
+        """A sane representation of a distance object."""
+
+        return "<Distance ({build} {st}) -- ({restaurant}): ~{num} {units}>".format(
+            build=self.campus.building,
+            st=self.campus.street,
+            restaurant=self.restaurant.name,
+            num=self.units_away,
+            units=self.units,
+        )
 
 
 def connect_to_db(app, uri="postgresql:///hbeats"):
