@@ -1,6 +1,7 @@
 """Database models for HB Eats."""
 
 from flask_sqlalchemy import SQLAlchemy
+import os
 
 db = SQLAlchemy()
 
@@ -115,6 +116,11 @@ class Distance(db.Model):
 
 def connect_to_db(app, uri="postgresql:///hbeats"):
     """Connect to the database."""
+
+    env_uri = os.environ.get("DATABASE_URL")
+
+    if env_uri:
+        uri = env_uri
 
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
     db.app = app
