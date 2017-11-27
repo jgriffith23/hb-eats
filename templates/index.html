@@ -3,7 +3,19 @@
 {% block title %} Homepage {% endblock %}
 
 {% block content %}
+
+<ul class="nav nav-tabs">
+  {% if active == 683 %}
+    <li role="presentation" class="active"><a href="/683">683 Sutter</a></li>
+    <li role="presentation"><a href="/450">450 Sutter</a></li>
+  {% elif active == 450 %}
+    <li role="presentation"><a href="/683">683 Sutter</a></li>
+    <li role="presentation" class="active"><a href="/450">450 Sutter</a></li>
+  {% endif %}
+</ul>
+
 <h2>Click restaurant titles to go to Yelp reviews.</h2>
+
 <div class="row">
 {% for distance in distances %}
     <div class="col-xs-6 col-xs-offset-1 col-md-4">
@@ -43,5 +55,13 @@
     </div>
 {% endfor %}
 </div>
+
+<script>
+    // TODO: Actually make this event listener functional. Use Ajax to
+    // put new data in the page instead of rerendering.
+    $(".nav-tabs").on("click", function (evt) {
+        $(this).toggleClass("active");
+    });
+</script>
 
 {% endblock %}

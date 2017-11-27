@@ -12,24 +12,21 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 
-@app.route("/")
-def index():
+@app.route("/<int:building>")
+def index(building):
     """Render the homepage."""
 
-    print "\n\n", session, "\n <3 from index\n\n"
-
-    campuses = Campus.query.all()
-
-    hb_683 = campuses[0]
+    # Get the HB campus whose restaurants we want to render.
+    campus = Campus.query.filter_by(building=building).first()
 
     # Without eager loading, front page would make 50 queries to render. With
     # eager loading, it makes 26.
     distances = Distance.query.options(
         db.joinedload('restaurant')).order_by(
         Distance.minutes).filter_by(
-        campus_id=hb_683.campus_id).all()
+        campus_id=campus.campus_id).all()
 
-    return render_template("index.html", distances=distances)
+    return render_template("index.html", distances=distances, active=building)
 
 #####################################################
 # Code that only runs if file is explicitly run
