@@ -1,20 +1,21 @@
-from flask import Flask, render_template, session, jsonify
+from flask import Flask, render_template, session, jsonify, request
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 from model import Campus, Distance, connect_to_db, db
 import yelp_api
-
+import os
 
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
 app.jinja_env.undefined = StrictUndefined
 
-
-@app.route("/<int:building>")
-def index(building):
+@app.route("/")
+def index():
     """Render the homepage."""
+
+    building = int(request.args.get("building", "683"))
 
     # Get the HB campus whose restaurants we want to render.
     campus = Campus.query.filter_by(building=building).first()
@@ -35,13 +36,13 @@ def index(building):
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
-    app.debug = True
+    app.debug = os.environ.get("DEBUG") or False
+
+    if app.debug:
+        # Use the DebugToolbar
+        DebugToolbarExtension(app)
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    TEMPLATES_AUTO_RELOAD = True
-
-    # Use the DebugToolbar
-    DebugToolbarExtension(app)
 
     connect_to_db(app)
 
