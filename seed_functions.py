@@ -119,7 +119,7 @@ def load_restaurant_distances():
                                          yelp_url=yelp_url
                                          )
 
-                rest_record.categories.extend(new_categories)
+                rest_record.categories.extend(categories)
 
             dist_record = Distance(restaurant=rest_record,
                                    campus=campus,
