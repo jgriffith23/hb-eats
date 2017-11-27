@@ -12,12 +12,50 @@ class Restaurant(db.Model):
 
     restaurant_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64))
+    address = db.Column(db.String(64))
+    dollar_signs = db.Column(db.Integer)
+    yelp_rating = db.Column(db.Float)
     yelp_id = db.Column(db.String(64))
+    img_url = db.Column(db.String(100))
+
+    categories = db.relationship("Category",
+                                 backref="restaurants",
+                                 secondary="rest_cats")
 
     def __repr__(self):
         """A sane representation of a restaurant object."""
 
         return "<Restaurant {name}>".format(name=self.name)
+
+
+class Category(db.Model):
+    """A category, as defined by Yelp."""
+
+    __tablename__ = "categories"
+
+    cat_code = db.Column(db.String(64), primary_key=True)
+    category = db.Column(db.String(64))
+
+    def __repr__(self):
+        "A sane representation of a category object."
+
+        return "<Category {name}>".format(name=self.category)
+
+
+class RestaurantCategories(db.Model):
+    """A category belonging to a restaurant.
+
+    A restaurant can have may categories; a category can have many restaurants.
+    """
+
+    __tablename__ = "rest_cats"
+
+    rc_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+
+    restaurant_id = db.Column(db.Integer,
+                              db.ForeignKey("restaurants.restaurant_id"))
+
+    cat_code = db.Column(db.String(64), db.ForeignKey("categories.cat_code"))
 
 
 class Campus(db.Model):

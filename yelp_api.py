@@ -51,6 +51,7 @@ def get_restaurants(term, lat="37.788744", lon="-122.411587", radius="805"):
     day = datetime.now().day
     month = datetime.now().month
     open_time = datetime(year, month, day, 13, 0, 0)
+
     unix_time = time.mktime(open_time.timetuple())
     unix_time_trunc = int(unix_time)
 
@@ -61,10 +62,9 @@ def get_restaurants(term, lat="37.788744", lon="-122.411587", radius="805"):
         "radius": radius,
         "term": term,
         "categories": "restaurants",
-        "limit": 20,
+        "limit": 24,
         "price": "1,2,3",
         "sort_by": "distance",
-        # "open_now": "true",
         "open_at": unix_time_trunc,
     }
 

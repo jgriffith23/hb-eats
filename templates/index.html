@@ -4,40 +4,37 @@
 
 {% block content %}
 
-<h1>Tasty Eatz Near Hackbright <span class="glyphicon glyphicon-cutlery"></span></h1>
+<h1>
+    Tasty Lunch Eatz Near Hackbright 
+    <span class="glyphicon glyphicon-cutlery"></span>
+</h1>
 <h3>(sorted by distance)</h3>
 
 <div class="row">
-    <div class="col-xs-6 col-xs-offset-3">
-        <h3> Currently showing: Lunch </h3>
-
-    </div>
-</div>
-
-<div class="row">
-{% for restaurant in restaurants %}
+{% for distance in distances %}
     <div class="col-xs-6 col-xs-offset-1 col-md-4">
         <div class="container well well-lg">
             <h4 class="rest-name"> 
-                <a href="{{ restaurants[restaurant]['details']['url'] }}"> 
-                    {{ restaurant }} 
+                <a href="FIXME WITH A URL"> 
+                    {{ distance.restaurant.name }}
                 </a> 
             </h4>
 
             <div class="category-list">
-                | {% for category in restaurants[restaurant]['details']['categories'] %} 
-                      {{ category['title'] }} |
+                | {% for category in distance.restaurant.categories %} 
+                      {{ category.category }} |
                   {% endfor %} 
             </div>
 
             <div class="other-info">
-                Price: {{ restaurants[restaurant]['details']['price'] }}<br> 
-                Rating: {{ restaurants[restaurant]['details']['rating'] }}<br>
-                Address: {{ restaurants[restaurant]['details']['location']['address1'] }}<br>
-                Distance from Hackbright: {{ restaurants[restaurant]['distance'].units_away }} {{ restaurants[restaurant]['distance'].units }}<br>
-                Time to walk from Hackbright: {{ restaurants[restaurant]['distance'].minutes }} min<br>
+                Price: {{ "$" * distance.restaurant.dollar_signs }}<br> 
+                Rating: {{ distance.restaurant.yelp_rating }}<br>
+                Address: {{ distance.restaurant.address }}<br>
+                Distance from Hackbright: {{ distance.units_away }} {{ distance.units }}<br>
+                Time to walk from Hackbright: {{ distance.minutes }} min<br>
 
-                <img class="img-responsive img-rounded thumbnail restaurant-img" src="{{ restaurants[restaurant]['details']['image_url'] }}">
+                <img class="img-responsive img-rounded thumbnail restaurant-img" 
+                     src="{{ distance.restaurant.img_url }}">
             </div>
         </div>
     </div>

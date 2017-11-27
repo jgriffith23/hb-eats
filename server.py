@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
-from model import Campus, connect_to_db
+from model import Campus, Distance, connect_to_db, db
 import yelp_api
 
 
@@ -22,21 +22,14 @@ def index():
 
     hb_683 = campuses[0]
 
-    distances = hb_683.distances
+    # Without eager loading, front page would make 50 queries to render. With
+    # eager loading, it makes 26.
+    distances = Distance.query.options(
+        db.joinedload('restaurant')).order_by(
+        Distance.minutes).filter_by(
+        campus_id=hb_683.campus_id).all()
 
-    restaurants = {}
-
-    for distance in distances:
-        restaurant = distance.restaurant
-        print restaurant.name
-        details = yelp_api.get_restaurant(restaurant.yelp_id)
-        restaurants[restaurant.name] = {'distance': distance,
-                                        'details': details,
-                                        'name': restaurant.name}
-
-    return render_template("index.html", restaurants=restaurants)
-
-    # return jsonify(restaurants['Matador']['details'])
+    return render_template("index.html", distances=distances)
 
 #####################################################
 # Code that only runs if file is explicitly run
