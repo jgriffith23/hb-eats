@@ -5,6 +5,7 @@ chardet==3.0.4
 Flask==0.10.1
 Flask-DebugToolbar==0.10.0
 Flask-SQLAlchemy==2.3.2
+googlemaps==2.5.1
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.7.3

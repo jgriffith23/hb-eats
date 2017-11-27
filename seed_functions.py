@@ -87,7 +87,7 @@ def load_restaurant_distances():
             yelp_url = restaurant['url']
 
             # Get the categories for each restaurant.
-            new_categories = []
+            categories = []
 
             for category in restaurant['categories']:
                 cat_code = category['alias']
@@ -97,7 +97,8 @@ def load_restaurant_distances():
 
                 if not c:
                     c = Category(cat_code=cat_code, category=category)
-                    new_categories.append(c)
+
+                categories.append(c)
 
             units_away, units = dist_info['distance']['text'].split(' ')
 
