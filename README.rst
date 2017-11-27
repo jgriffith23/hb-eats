@@ -103,9 +103,13 @@ Helpful Resources
 
 - `Google Maps Distance Matrix docs
   <https://developers.google.com/maps/documentation/distance-matrix/intro>`_
+  
   (Though if I revisit this project any time soon, I'm going to rework it to
   use PostGIS instead. Seriously, that's way better and would allow users to
-  select for more specific distances.)
+  select for more specific distances.
+
+  Curious aboun PostGIS? Check out `my tutorial 
+  <https://www.jennifergd.com/post/7/>`_!)
 
 - `Datetime <https://docs.python.org/2/library/datetime.html>`_ and `Time docs 
   <https://docs.python.org/2/library/time.html>`_ (for the part in *yelp_api.py* 
