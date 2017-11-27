@@ -84,6 +84,7 @@ def load_restaurant_distances():
             dollar_signs = len(restaurant['price'])
             rating = restaurant['rating']
             img_url = restaurant['image_url']
+            yelp_url = restaurant['url']
 
             # Get the categories for each restaurant.
             new_categories = []
@@ -113,7 +114,8 @@ def load_restaurant_distances():
                                          address=address,
                                          dollar_signs=dollar_signs,
                                          yelp_rating=rating,
-                                         img_url=img_url
+                                         img_url=img_url,
+                                         yelp_url=yelp_url
                                          )
 
                 rest_record.categories.extend(new_categories)

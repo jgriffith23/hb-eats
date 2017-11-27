@@ -1,16 +1,68 @@
 .restaurant-img {
     height: 12em;
     width: auto;
+    margin: 1em auto auto auto;
+    display: block;
+}
+
+#body-div {
+    margin: 4em auto auto auto;
+}
+
+h1, .h1 {
+    color: red;
+    font-size: 2em;
+    font-family: "Lato", sans-serif;
+    margin: 2% 0 1% 0;
+}
+
+.navbar-default .navbar-brand{
+    color: red;
+}
+
+h2, .h2 {
+    font-family: "Lato", sans-serif;
+    font-size: 1em;
+    font-style: italic;
 }
 
 h4.rest-name, a {
-    font-size: 1em;
+    font-size: 1.2em;
+    text-align: center;
+    margin: auto auto 5% auto;
 }
 
 .category-list {
-    font-size: .7em;
+    font-size: 1em;
 }
 
 .other-info {
+    text-align: left;
     font-size: .8em;
+    margin: .8em auto auto auto;
+}
+
+footer.footer {
+    font-size: 1em;
+}
+
+a {
+    color: red;
+    font-family: "Lato", sans-serif;
+}
+
+a:hover {
+    color: red;
+    font-family: "Lato", sans-serif;
+}
+
+.row.info {
+    background-color: white;
+    border-radius: 10px;
+    border-color: #666;
+    border-style: solid;
+    padding: 1em;
+    display: inline-block;
+    margin: .25em;
+    min-width: 100%;
 }

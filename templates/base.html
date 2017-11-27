@@ -1,16 +1,59 @@
 <!doctype html>
 
 <html>
-    <head>
-        <title>HB Eatz {% block title %} TITLE GOES HERE {% endblock %}</title>
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/static/css/styles.css"
-    </head>
-    <body>
-        <div class="container" id="body-div">
-            {% block content %} CONTENT GOES HERE {% endblock %}
-        </div>
-    </body>
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<head>
+    <title>HB Eatz {% block title %} TITLE GOES HERE {% endblock %}</title>
+    <script src="https://use.fontawesome.com/ea2a57b98e.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-cutlery"></span></a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li>
+          <h1>
+            Tasty Lunch Spots Near Hackbright 
+          </h1>
+      </li>
+    </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div class="container" id="body-div">
+    {% block content %} CONTENT GOES HERE {% endblock %}
+</div>
+
+<footer class="footer">
+<hr>
+    <div class="container">
+        <p class="text-muted">
+          <i>Created by Jennifer Griffith-Delgado. Not officially endorsed by Hackbright.</i> | 
+          <a href="https://github.com/jgriffith23/hb-eats">
+            <i class="fa fa-github" aria-hidden="true"></i> View Source
+          </a>
+        </p>
+    </div>
+</footer>
+
+</body>
+
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 </html>

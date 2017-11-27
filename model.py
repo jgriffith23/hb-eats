@@ -16,6 +16,7 @@ class Restaurant(db.Model):
     dollar_signs = db.Column(db.Integer)
     yelp_rating = db.Column(db.Float)
     yelp_id = db.Column(db.String(64))
+    yelp_url = db.Column(db.String(500))
     img_url = db.Column(db.String(100))
 
     categories = db.relationship("Category",
