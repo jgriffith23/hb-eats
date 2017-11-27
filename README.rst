@@ -102,7 +102,7 @@ Helpful Resources
   (they're so good!)
 
 - `Google Maps Distance Matrix docs
-  <https://developers.google.com/maps/documentation/distance-matrix/intro>_
+  <https://developers.google.com/maps/documentation/distance-matrix/intro>`_
   (Though if I revisit this project any time soon, I'm going to rework it to
   use PostGIS instead. Seriously, that's way better and would allow users to
   select for more specific distances.)
