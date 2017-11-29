@@ -15,19 +15,55 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Render the homepage."""
 
+    # building = int(request.args.get("building", "683"))
+
+    # # Get the HB campus whose restaurants we want to render.
+    # campus = Campus.query.filter_by(building=building).first()
+
+    # # Without eager loading, front page would make 50 queries to render. With
+    # # eager loading, it makes 26.
+    # distances = Distance.query.options(
+    #     db.joinedload('restaurant')).order_by(
+    #     Distance.minutes).filter_by(
+    #     campus_id=campus.campus_id).all()
+
+    return render_template("index2.html") #, distances=distances, active=building)
+
+
+@app.route("/restaurants.json")
+def get_restauraunts():
+    """Return a JSON string with nearby restaurant info."""
+
     building = int(request.args.get("building", "683"))
 
-    # Get the HB campus whose restaurants we want to render.
     campus = Campus.query.filter_by(building=building).first()
 
-    # Without eager loading, front page would make 50 queries to render. With
-    # eager loading, it makes 26.
     distances = Distance.query.options(
         db.joinedload('restaurant')).order_by(
         Distance.minutes).filter_by(
         campus_id=campus.campus_id).all()
 
-    return render_template("index.html", distances=distances, active=building)
+    restaurant_distance_info = []
+
+    for distance in distances:
+        categories = [category.category for category in distance.restaurant.categories]
+
+        all_info = {
+            "name": distance.restaurant.name,
+            "yelpURL": distance.restaurant.yelp_url,
+            "categories": categories,
+            "dollarSigns": distance.restaurant.dollar_signs,
+            "address": distance.restaurant.address,
+            "distanceAway": str(distance.units_away) + " " + distance.units,
+            "timeAway": str(distance.minutes) + " min",
+            "img": distance.restaurant.img_url,
+        }
+
+        restaurant_distance_info.append(all_info)
+
+    return jsonify(info=restaurant_distance_info)
+
+
 
 #####################################################
 # Code that only runs if file is explicitly run
