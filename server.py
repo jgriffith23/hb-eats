@@ -15,19 +15,26 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Render the homepage."""
 
-    # building = int(request.args.get("building", "683"))
+    building = int(request.args.get("building", "683"))
 
-    # # Get the HB campus whose restaurants we want to render.
-    # campus = Campus.query.filter_by(building=building).first()
+    # Get the HB campus whose restaurants we want to render.
+    campus = Campus.query.filter_by(building=building).first()
 
-    # # Without eager loading, front page would make 50 queries to render. With
-    # # eager loading, it makes 26.
-    # distances = Distance.query.options(
-    #     db.joinedload('restaurant')).order_by(
-    #     Distance.minutes).filter_by(
-    #     campus_id=campus.campus_id).all()
+    # Without eager loading, front page would make 50 queries to render. With
+    # eager loading, it makes 26.
+    distances = Distance.query.options(
+        db.joinedload('restaurant')).order_by(
+        Distance.minutes).filter_by(
+        campus_id=campus.campus_id).all()
 
-    return render_template("index2.html") #, distances=distances, active=building)
+    return render_template("index.html", distances=distances, active=building)
+
+
+# @app.route("/")
+# def index():
+#     """Render the homepage."""
+
+#     return render_template("index2.html")
 
 
 @app.route("/restaurants.json")
