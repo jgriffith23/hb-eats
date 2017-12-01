@@ -43,7 +43,7 @@ def get_restauraunts():
         Distance.minutes).filter_by(
         campus_id=campus.campus_id).all()
 
-    restaurant_distance_info = []
+    restaurant_distance_info = {"683": []}
 
     for distance in distances:
         categories = [category.category for category in distance.restaurant.categories]
@@ -59,9 +59,9 @@ def get_restauraunts():
             "img": distance.restaurant.img_url,
         }
 
-        restaurant_distance_info.append(all_info)
+        restaurant_distance_info["683"].append(all_info)
 
-    return jsonify(info=restaurant_distance_info)
+    return jsonify(restaurant_distance_info)
 
 
 

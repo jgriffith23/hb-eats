@@ -7,9 +7,11 @@ class NavTab extends React.Component {
     }
 
     render () {
+        let url = "/?building=" + this.props.building;
+
         return (
-            <li role="presentation" className={ this.props.active }>
-                <a href="/?building={ this.props.building }">{ this.props.building } Sutter</a>
+            <li role="presentation" className={(this.active) ? "active" : ""}>
+                <a href={url}>{ this.props.building } Sutter</a>
             </li>
         );
     }
@@ -19,7 +21,7 @@ class AllNavTabs extends React.Component {
     render () {
         return (
             <ul className="nav nav-tabs">
-                <NavTab building="683" active="active" />
+                <NavTab building="683" active={ true } />
                 <NavTab building="450" />
             </ul>
         );
@@ -65,7 +67,7 @@ class RestaurantHeading extends React.Component {
         return (
             <h4 className="rest-name"> 
                 <a href="{ this.props.url }"> 
-                    { this.props.name + "<--- PROPSSSS"}
+                    { this.props.name }
                 </a> 
             </h4>
         );
@@ -149,7 +151,6 @@ class RestaurantList extends React.Component {
                                          timeAway={ each.timeAway }
                                          yelpURL={ each.yelpURL }
                              />
-
             restaurants.push(restaurant);
         }
 
@@ -158,31 +159,10 @@ class RestaurantList extends React.Component {
                 { restaurants }
             </div>
         );
-
     }
-
-//     componentDidMount() {
-//         fetch("/restaurants.json")
-//         .then(response => {
-//             this.state = ????
-//         });
-//     }
 }
 
-
 function HBEatsSite(props) {
-
-    // let restaurants = fetch("/restaurants.json?building=450")
-    // .then(function(response) {
-    //     return response.json()
-    // })
-    // .then(function(data) {
-    //     console.log(data.info); 
-    // });
-
-    // console.log(restaurants);
-
-    // {`${restaurants[0].name}`}
 
     return (
         <div>
