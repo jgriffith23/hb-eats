@@ -1,7 +1,13 @@
 "use strict";
 
 function HBEatsSite(props) {
-
+    fetch("/restaurants.json")
+    .then(function(response) {
+      return response.json();
+    }).then(function(jsonRestaurants) {
+      console.log(jsonRestaurants);    
+    });
+    
     return (
         <div>
         <AllNavTabs buildings={["683", "450"]}/>
