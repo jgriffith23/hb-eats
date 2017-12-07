@@ -34,6 +34,15 @@ class RestaurantList extends React.Component {
         ]};
     }
 
+    // componentDidMount() {
+    //   fetch("/restaurants.json")
+    //   .then(function(response) {
+    //     return response.json();
+    //   }).then(function(jsonRestaurants) {
+    //     console.log(jsonRestaurants);
+    //   });
+    // }
+
     render () {
         let restaurants = []
 
