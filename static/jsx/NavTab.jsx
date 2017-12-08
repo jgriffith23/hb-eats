@@ -9,7 +9,7 @@ class NavTab extends React.Component {
 
         return (
             <li role="presentation" className={(this.active) ? "active" : ""}>
-                <a href={url}>{ this.props.building } Sutter</a>
+                <a href={url}>{ this.props.building } { this.props.street }</a>
             </li>
         );
     }
