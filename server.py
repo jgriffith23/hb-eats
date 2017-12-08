@@ -37,7 +37,7 @@ def index():
     return render_template("index2.html")
 
 
-@app.route("/restaurants.json")
+@app.route("/restaurants")
 def get_restauraunts():
     """Return a JSON string with nearby restaurant info."""
 
@@ -50,7 +50,7 @@ def get_restauraunts():
         Distance.minutes).filter_by(
         campus_id=campus.campus_id).all()
 
-    restaurant_distance_info = {"683": []}
+    restaurant_distance_info = []
 
     for distance in distances:
         categories = [category.category for category in distance.restaurant.categories]
@@ -66,9 +66,20 @@ def get_restauraunts():
             "img": distance.restaurant.img_url,
         }
 
-        restaurant_distance_info["683"].append(all_info)
+        restaurant_distance_info.append(all_info)
 
-    return jsonify(restaurant_distance_info)
+    return jsonify(restaurants=restaurant_distance_info)
+
+
+@app.route("/campuses")
+def get_campuses():
+    """Return JSON containing all campuses."""
+
+    campuses = Campus.query.all()
+
+    buildings = [str(campus.building) for campus in campuses]
+
+    return jsonify(campuses=buildings)
 
 
 

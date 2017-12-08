@@ -11,12 +11,19 @@ class HBEatsSite extends React.Component {
     }
 
     componentDidMount() {
-      fetch("/restaurants.json")
+      fetch("/campuses")
+      .then(response => response.json())
+      .then(jsonCampuses => this.setState({ 
+        campuses: jsonCampuses.campuses
+      }));
+
+      fetch("/restaurants")
       .then(response => response.json())
       .then(jsonRestaurants => this.setState({ 
-        visibleRestaurants: jsonRestaurants["683"],
-        campuses: Object.keys(jsonRestaurants)
+        visibleRestaurants: jsonRestaurants.restaurants
       }));
+
+
     }
 
     render () {
