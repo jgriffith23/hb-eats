@@ -75,11 +75,23 @@ def get_restauraunts():
 def get_campuses():
     """Return JSON containing all campuses."""
 
+    active = "683"
+
     campuses = Campus.query.all()
 
-    buildings = [str(campus.building) for campus in campuses]
+    campuses = [{"building": str(campus.building),
+                 "street": campus.street} for campus in campuses]
 
-    return jsonify(campuses=buildings)
+    for campus in campuses:
+        if campus["building"] == active:
+            campus["active"] = True
+
+        else:
+            campus["active"] = False
+
+    campuses.sort(key=lambda campus: campus["building"])
+
+    return jsonify(campuses=campuses)
 
 
 

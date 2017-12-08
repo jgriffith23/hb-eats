@@ -29,7 +29,7 @@ class HBEatsSite extends React.Component {
     render () {
       return (
         <div>
-        <AllNavTabs buildings={ this.state.campuses }/>
+        <AllNavTabs campuses={ this.state.campuses }/>
         <RestaurantList building={ this.state.visibleRestaurants }/>
         </div>
       )

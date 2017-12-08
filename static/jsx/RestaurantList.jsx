@@ -4,11 +4,13 @@ class RestaurantList extends React.Component {
     }
 
     render () {
-        let restaurants = []
+        let restaurants = [];
 
-        console.log("in RestaurantList render: ");
         console.log(this.props.building);
 
+        // "building" is a list of objects containing restaurant info.
+        // generate a Restaurant component for each object, and return them
+        // all together wrapped in a div.
         for (let each of this.props.building) {
             let restaurant = <Restaurant key={ each.name }
                                          address={ each.address } 
