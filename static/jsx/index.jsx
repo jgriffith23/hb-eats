@@ -4,6 +4,7 @@ class HBEatsSite extends React.Component {
     constructor (props) {
       super(props);
       this.state = {
+        visibleRestaurants: [],
         campuses: []
       };
 
@@ -11,19 +12,18 @@ class HBEatsSite extends React.Component {
 
     componentDidMount() {
       fetch("/restaurants.json")
-      .then(function(response) {
-        return response.json();
-      }).then(function(jsonRestaurants) {
-        console.log(jsonRestaurants);
-        this.setState({ campuses: jsonRestaurants });
-      });
+      .then(response => response.json())
+      .then(jsonRestaurants => this.setState({ 
+        visibleRestaurants: jsonRestaurants["683"],
+        campuses: Object.keys(jsonRestaurants)
+      }));
     }
 
     render () {
       return (
         <div>
-        <AllNavTabs buildings={["683", "450"]}/>
-        <RestaurantList building="683"/>
+        <AllNavTabs buildings={ this.state.campuses }/>
+        <RestaurantList building={ this.state.visibleRestaurants }/>
         </div>
       )
     };
