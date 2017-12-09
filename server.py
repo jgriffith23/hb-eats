@@ -40,17 +40,20 @@ def index():
 def get_restauraunts():
     """Return a JSON string with nearby restaurant info."""
 
-    print request.args
+    # The query will tell us which building we're querying for. Default to
+    # the first campus, numerically.
 
-    building = int(request.args.get("building", "683"))
-
+    building = int(request.args.get("building", "450"))
     campus = Campus.query.filter_by(building=building).first()
 
+    # Get all restaurant distance info associated with the campus requested.
     distances = Distance.query.options(
         db.joinedload('restaurant')).order_by(
         Distance.minutes).filter_by(
         campus_id=campus.campus_id).all()
 
+    # Create a list of dictionaries representing each restaurant's information
+    # so we can JSONify it for the front end.
     restaurant_distance_info = []
 
     for distance in distances:
@@ -76,12 +79,17 @@ def get_restauraunts():
 def get_campuses():
     """Return JSON containing all campuses."""
 
-    active = request.args.get("building", "683")
+    # The query will tell us which campus is going to be displayed.
+    active = request.args.get("building")
 
     campuses = Campus.query.all()
 
+    # Make a list of dictionaries containing campus data that we'll JSONify.
     campuses = [{"building": str(campus.building),
                  "street": campus.street} for campus in campuses]
+
+    # Set the "active" key on each campus dict, so React
+    # can render the tabs properly.
 
     for campus in campuses:
         if campus["building"] == active:
@@ -92,13 +100,13 @@ def get_campuses():
 
     campuses.sort(key=lambda campus: campus["building"])
 
+    # If we landed on the homepage without clicking a tab, default to the
+    # first campus in the list.
+    if active is None:
+        active = campuses[0]["building"]
+
     return jsonify(campuses=campuses)
 
-
-
-#####################################################
-# Code that only runs if file is explicitly run
-#####################################################
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
@@ -115,4 +123,4 @@ if __name__ == "__main__":
 
     PORT = int(os.environ.get("PORT", 5000))
 
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host="0.0.0.0", port=PORT, threaded=True)

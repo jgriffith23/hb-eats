@@ -28,13 +28,13 @@ class HBEatsSite extends React.Component {
       // No matter what, request the JSON data and update the component's
       // state with the correct info.
 
-      fetch(`/campuses?building=${building}`)
+      fetch(`/campuses?building=${building}`, { method: "GET" })
       .then(response => response.json())
       .then(jsonCampuses => this.setState({ 
         campuses: jsonCampuses.campuses
       }));
 
-      fetch(`/restaurants?building=${building}`)
+      fetch(`/restaurants?building=${building}`, { method: "GET" })
       .then(response => response.json())
       .then(jsonRestaurants => this.setState({ 
         visibleRestaurants: jsonRestaurants.restaurants
