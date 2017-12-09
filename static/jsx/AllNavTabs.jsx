@@ -1,13 +1,14 @@
 class AllNavTabs extends React.Component {
     render () {
-        console.log(this.props.campuses);
 
         let navTabs = [];
 
         for (let each of this.props.campuses) {
-            let navTab = <NavTab building={ each.building }
+            let navTab = <NavTab key={ each.building }
+                                 building={ each.building }
                                  street={ each.street }
-                                 active={ each.active } />;
+                                 active={ each.active } 
+                                 handler={ this.props.handler } />;
             navTabs.push(navTab);
         }
 

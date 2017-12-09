@@ -1,8 +1,7 @@
-from flask import Flask, render_template, session, jsonify, request
+from flask import Flask, render_template, jsonify, request
 from flask_debugtoolbar import DebugToolbarExtension
 from jinja2 import StrictUndefined
 from model import Campus, Distance, connect_to_db, db
-import yelp_api
 import os
 
 app = Flask(__name__)
@@ -41,6 +40,8 @@ def index():
 def get_restauraunts():
     """Return a JSON string with nearby restaurant info."""
 
+    print request.args
+
     building = int(request.args.get("building", "683"))
 
     campus = Campus.query.filter_by(building=building).first()
@@ -75,7 +76,7 @@ def get_restauraunts():
 def get_campuses():
     """Return JSON containing all campuses."""
 
-    active = "683"
+    active = request.args.get("building", "683")
 
     campuses = Campus.query.all()
 

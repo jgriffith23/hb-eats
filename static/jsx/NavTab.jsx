@@ -6,10 +6,13 @@ class NavTab extends React.Component {
 
     render () {
         let url = "/?building=" + this.props.building;
+        console.log(this.props);
 
         return (
             <li role="presentation" className={(this.active) ? "active" : ""}>
-                <a href={url}>{ this.props.building } { this.props.street }</a>
+                <a href={url} onClick={ (evt) => this.props.handler(evt, this.props.building) }>
+                  { this.props.building } { this.props.street }
+                </a>
             </li>
         );
     }
