@@ -1,7 +1,7 @@
 class NavTab extends React.Component {
     constructor (props) {
         super(props);
-        this.active = this.props.active;
+        // this.active = this.props.active;
     }
 
     render () {
@@ -9,7 +9,7 @@ class NavTab extends React.Component {
         console.log(this.props);
 
         return (
-            <li role="presentation" className={(this.active) ? "active" : ""}>
+            <li role="presentation" className={(this.props.active) ? "active" : ""}>
                 <a href={url} onClick={ (evt) => this.props.handler(evt, this.props.building) }>
                   { this.props.building } { this.props.street }
                 </a>
