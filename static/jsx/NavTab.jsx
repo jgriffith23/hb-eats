@@ -1,12 +1,10 @@
 class NavTab extends React.Component {
     constructor (props) {
         super(props);
-        // this.active = this.props.active;
     }
 
     render () {
         let url = "/?building=" + this.props.building;
-        console.log(this.props);
 
         return (
             <li role="presentation" className={(this.props.active) ? "active" : ""}>

@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # point that we invoke the DebugToolbarExtension
     app.debug = os.environ.get("DEBUG") or False
 
-    if app.debug:
+    if app.debug is True:
         # Use the DebugToolbar
         DebugToolbarExtension(app)
 
