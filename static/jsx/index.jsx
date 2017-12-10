@@ -18,7 +18,7 @@ class HBEatsSite extends React.Component {
     // Fetch JSON from the server to populate the page. Can respond to a 
     // click event or just get called when the page loads.
 
-    getData (evt, building = "683") {
+    getData (evt, building = "450") {
 
       // We won't be able to preventDefault if there was no evt.
       if (evt) {

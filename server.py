@@ -73,19 +73,23 @@ def get_campuses():
     # Set the "active" key on each campus dict, so React
     # can render the tabs properly.
 
+    campuses.sort(key=lambda campus: campus["building"])
+
+    # If we landed on the homepage without clicking a tab, default to the
+    # first campus in the list.
+    if active == "unset":
+        active = campuses[0]["building"]
+
+    print active
+    print campuses
+    print active
+
     for campus in campuses:
         if campus["building"] == active:
             campus["active"] = True
 
         else:
             campus["active"] = False
-
-    campuses.sort(key=lambda campus: campus["building"])
-
-    # If we landed on the homepage without clicking a tab, default to the
-    # first campus in the list.
-    if active is None:
-        active = campuses[0]["building"]
 
     return jsonify(campuses=campuses)
 
